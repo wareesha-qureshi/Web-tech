@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if bio %}{{ bio.name }} | Portfolio{% else %}Portfolio{% endif %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/portfolio.css' %}">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a class="nav-brand" href="#home">
+                <span class="nav-brand-icon">
+                    {% if bio %}{{ bio.name|slice:":1"|upper }}{% else %}P{% endif %}
+                </span>
+                {% if bio %}{{ bio.name }}{% else %}Portfolio{% endif %}
+            </a>
+
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu">☰</button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-inner">
+            {% if bio %}
+                <div class="avatar">{{ bio.name|slice:":1"|upper }}</div>
+                <h1>{{ bio.name }}</h1>
+                <p class="job">{{ bio.job }}</p>
+                <p class="bio-text">{{ bio.bio }}</p>
+            {% else %}
+                <div class="avatar">P</div>
+                <h1>Portfolio</h1>
+                <p class="bio-text empty">Add your bio in the admin panel to get started.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <main>
+        <section id="education">
+            <h2>Education</h2>
+            {% if educations %}
+                <div class="card-grid">
+                    {% for item in educations %}
+                        <article class="card">
+                            <h3>{{ item.degree }}</h3>
+                            <p>{{ item.institution }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No education entries yet.</p>
+            {% endif %}
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            {% if skills %}
+                <div class="skill-list">
+                    {% for item in skills %}
+                        <span class="skill-tag">
+                            {{ item.skill_name }}
+                            <span>{{ item.proficiency }}</span>
+                        </span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No skills listed yet.</p>
+            {% endif %}
+        </section>
+
+        <section id="experience">
+            <h2>Experience</h2>
+            {% if experiences %}
+                <div class="card-grid">
+                    {% for item in experiences %}
+                        <article class="card">
+                            <h3>{{ item.role }}</h3>
+                            <p>{{ item.company }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No experience entries yet.</p>
+            {% endif %}
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            {% if projects %}
+                <div class="card-grid">
+                    {% for item in projects %}
+                        <article class="card">
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.description }}</p>
+                            <a class="project-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">
+                                View project →
+                            </a>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No projects to show yet.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            {% if bio %}
+                © {% now "Y" %} {{ bio.name }}. Built with Django.
+            {% else %}
+                © {% now "Y" %} Portfolio. Built with Django.
+            {% endif %}
+        </p>
+    </footer>
+
+    <script src="{% static 'js/nav.js' %}"></script>
+</body>
+</html>
